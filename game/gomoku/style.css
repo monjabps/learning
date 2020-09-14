@@ -1,0 +1,54 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.header, .row {
+    display: flex;
+    justify-content: center;
+}
+
+.header {
+    padding: 20px 0;
+}
+
+#btnStart {
+    height: 50px;
+    width: 150px;
+    border: solid 1px #000000;
+    border-radius: 5px;
+}
+
+#result {
+    height: 50px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px;
+    color: #ff0000;
+    border: solid 1px #ff0000;
+    border-radius: 5px;
+}
+
+.row button {
+    height: 30px;
+    width: 30px;
+    padding: 0;
+    margin: 1px;
+    border: solid 1px #000000;
+    font-size: 21px;
+    background-color: #ffffff;
+}
+
+.maru {
+    color: #0000ff;
+}
+
+.batsu {
+    color: #ff0000;
+}

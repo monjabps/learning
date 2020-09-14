@@ -1,0 +1,42 @@
+
+.header, .row, .footer {
+    display: flex;
+    justify-content: center;
+}
+
+#btnStart {
+    height: 50px;
+    width: 150px;
+    margin: 60px 0 20px;
+    border: solid 1px #000000;
+    border-radius: 5px;
+}
+
+.row button {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    margin: 1px;
+    border: solid 1px #000000;
+    border-radius: 5px;
+}
+
+.on {
+    background-color: #ffff00;
+}
+
+.off {
+    background-color: #00ffff;
+}
+
+#result {
+    height: 50px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    color: #ff0000;
+    border: solid 1px #ff0000;
+    border-radius: 5px;
+}
