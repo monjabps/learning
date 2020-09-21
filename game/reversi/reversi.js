@@ -104,37 +104,30 @@
         if (data[row][col] !== PLAYER.space) {
             return false;
         }
-        for (const v of MV) {
-            let foundEnemy = false;
+        return !!MV.find(v => {
             for (let r = row + v[0], c = col + v[1]; 0 <= r && r < ROW_SIZE && 0 <= c && c < COL_SIZE; r += v[0], c += v[1]) {
                 if (data[r][c] === PLAYER.space) {
-                    break;
+                    return false;
                 }
                 if (data[r][c] === player) {
-                    if (foundEnemy) {
-                        return true;
-                    }
-                    break;
-                }
-                if (data[r][c] === (player === PLAYER.black ? PLAYER.white : PLAYER.black)) {
-                    foundEnemy = true;
+                    return r !== row + v[0] || c !== col + v[1];
                 }
             }
-        }
-        return false;
+            return false;
+        });
     }
 
     function putCpu() {
         const placeCount = nextPlaces.flat().filter(v => v).length;
-        let place = Math.floor(Math.random() * placeCount);
+        let skipCount = Math.floor(Math.random() * placeCount);
         for (let row = 0; row < ROW_SIZE; row++) {
             for (let col = 0; col < COL_SIZE; col++) {
                 if (nextPlaces[row][col]) {
-                    if (place === 0) {
+                    if (skipCount === 0) {
                         clickBoard(row, col);
                         return;
                     }
-                    place--;
+                    skipCount--;
                 }
             }
         }
