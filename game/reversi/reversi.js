@@ -12,11 +12,16 @@
     let data;
     let nextPlaces;
     let player;
+    let cpu;
     let status;
 
     function createButtons() {
-        document.getElementById('btnStart').addEventListener('click', () => {
-            initData();
+        document.getElementById('btnStartHuman').addEventListener('click', () => {
+            initData(false);
+            draw();
+        });
+        document.getElementById('btnStartCpu').addEventListener('click', () => {
+            initData(true);
             draw();
         });
 
@@ -34,19 +39,22 @@
         }
     }
 
-    function initData() {
+    function initData(isCpu) {
         data = [...Array(ROW_SIZE)].map(() => Array(COL_SIZE).fill(PLAYER.space));
         data[3][3] = PLAYER.black;
         data[3][4] = PLAYER.white;
         data[4][3] = PLAYER.white;
         data[4][4] = PLAYER.black;
         player = PLAYER.black;
+        cpu = isCpu ? PLAYER.white : null;
         status = STATUS.playing;
+        document.getElementById('btnStartHuman').className = isCpu ? '' : 'start-mode';
+        document.getElementById('btnStartCpu').className = isCpu ? 'start-mode' : '';
         createNextPlaces()
     }
 
     function clickBoard(row, col) {
-        if (status === STATUS.playing && nextPlaces[row][col]) {
+        if (nextPlaces[row][col]) {
             reverse(row, col);
             player = player === PLAYER.black ? PLAYER.white : PLAYER.black;
             if (!createNextPlaces()) {
@@ -56,6 +64,9 @@
                 }
             }
             draw();
+            if (status === STATUS.playing && player === cpu) {
+                putCpu();
+            }
         }
     }
 
@@ -113,6 +124,22 @@
         return false;
     }
 
+    function putCpu() {
+        const placeCount = nextPlaces.flat().filter(v => v).length;
+        let place = Math.floor(Math.random() * placeCount);
+        for (let row = 0; row < ROW_SIZE; row++) {
+            for (let col = 0; col < COL_SIZE; col++) {
+                if (nextPlaces[row][col]) {
+                    if (place === 0) {
+                        clickBoard(row, col);
+                        return;
+                    }
+                    place--;
+                }
+            }
+        }
+    }
+
     function draw() {
         data.forEach((cols, i) => {
             cols.forEach((v, j) => {
@@ -120,8 +147,8 @@
                 btn.className = `${PLAYER_CLASSES[v]} ${nextPlaces[i][j] ? 'next-place' : 'no-place'}`;
             });
         });
-        const black = data.flat().reduce((sum, v) => v === PLAYER.black ? sum + 1 : sum, 0);
-        const white = data.flat().reduce((sum, v) => v === PLAYER.white ? sum + 1 : sum, 0);
+        const black = data.flat().filter(v => v === PLAYER.black).length;
+        const white = data.flat().filter(v => v === PLAYER.white).length;
         document.getElementById('vs').textContent = `黒 ${black} VS 白 ${white}`;
         document.getElementById('status').textContent = getResultText(black, white);
     }
@@ -137,6 +164,6 @@
     }
 
     createButtons();
-    initData();
+    initData(false);
     draw();
 })();
